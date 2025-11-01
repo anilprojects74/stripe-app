@@ -37,7 +37,7 @@ app.post('/create-checkout-session', async (req, res) => {
       ],
       mode: 'payment',
       success_url: `http://${FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `http://${FRONTEND_URL}/cancel`,
+      cancel_url: `http://${FRONTEND_URL}/failure?session_id={CHECKOUT_SESSION_ID}`,
     });
 
     res.json({ url: session.url });
@@ -50,20 +50,15 @@ app.post('/create-checkout-session', async (req, res) => {
 
 // ✅ Retrieve Checkout Session Details
 app.post("/retrieve-checkout-session", async (req, res) => {
+  const { session_id } = req.body;
+  if (!session_id) return res.status(400).json({ error: "Missing session_id" });
+
   try {
-    const { session_id } = req.body;
-    if (!session_id) {
-      return res.status(400).json({ error: "Missing session_id" });
-    }
-
-    const session = await stripe.checkout.sessions.retrieve(session_id, {
-      expand: ["payment_intent", "customer"],
-    });
-
+    const session = await stripe.checkout.sessions.retrieve(session_id);
     res.json(session);
-  } catch (err) {
-    console.error("Error retrieving checkout session:", err.message);
-    res.status(400).json({ error: err.message });
+  } catch (error) {
+    console.error("Error retrieving checkout session:", error);
+    res.status(500).json({ error: error.message });
   }
 });
 
