@@ -1,3 +1,8 @@
+####################################################
+# stops both frontend and backend servers
+# By stoping the ports
+####################################################
+
 #!/bin/bash
 
 echo "🛑 Stopping frontend and backend servers..."
