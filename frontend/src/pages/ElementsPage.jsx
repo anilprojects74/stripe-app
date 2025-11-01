@@ -5,13 +5,14 @@ import CheckoutForm from "./CheckoutForm";
 import axios from "axios";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function ElementsPage() {
   const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {
     axios
-      .post("http://localhost:5000/create-payment-intent", { amount: 5000 })
+      .post(`http://${apiUrl}/create-payment-intent`, { amount: 5000 })
       .then((res) => setClientSecret(res.data.client_secret))
       .catch((err) => console.error("Error creating payment intent:", err));
   }, []);

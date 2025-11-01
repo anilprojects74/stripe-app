@@ -4,6 +4,8 @@ import { Table, InputNumber, Button, Typography, message, Card, Tag, Tooltip } f
 
 const { Title, Paragraph } = Typography;
 
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
+
 export default function CheckoutPage() {
   const [amount, setAmount] = useState(50);
   const [loading, setLoading] = useState(false);
@@ -14,7 +16,7 @@ export default function CheckoutPage() {
   const fetchPayments = async () => {
     setPaymentsLoading(true);
     try {
-      const { data } = await axios.get("http://localhost:5000/checkout-payments");
+      const { data } = await axios.get(`http://${apiUrl}/checkout-payments`);
       setPayments(data);
     } catch (err) {
       console.error(err);
@@ -37,7 +39,7 @@ export default function CheckoutPage() {
 
     try {
       setLoading(true);
-      const { data } = await axios.post("http://localhost:5000/create-checkout-session", {
+      const { data } = await axios.post(`http://${apiUrl}/create-checkout-session`, {
         amount,
       });
       window.location.href = data.url;

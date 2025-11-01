@@ -3,6 +3,8 @@ const cors = require('cors');
 const Stripe = require('stripe');
 require('dotenv').config();
 
+const FRONTEND_URL = process.env.FRONTEND_URL;
+
 const app = express();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -34,8 +36,8 @@ app.post('/create-checkout-session', async (req, res) => {
         },
       ],
       mode: 'payment',
-      success_url: "http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: "http://localhost:5173/cancel",
+      success_url: `http://${FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `http://${FRONTEND_URL}/cancel`,
     });
 
     res.json({ url: session.url });

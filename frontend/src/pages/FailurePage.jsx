@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 export default function FailurePage() {
   const [searchParams] = useSearchParams();
   const [payment, setPayment] = useState(null);
@@ -16,7 +17,7 @@ export default function FailurePage() {
 
     const fetchPayment = async () => {
       try {
-        const { data } = await axios.post("http://localhost:5000/retrieve-payment-intent", {
+        const { data } = await axios.post(`http://${apiUrl}/retrieve-payment-intent`, {
           client_secret: clientSecret,
         });
         setPayment(data);

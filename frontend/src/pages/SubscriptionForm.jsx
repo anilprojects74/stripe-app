@@ -5,6 +5,7 @@ import CheckoutForm from "./CheckoutForm";
 import axios from "axios";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function SubscriptionForm() {
   const [selectedPlan, setSelectedPlan] = useState("monthly");
@@ -28,7 +29,7 @@ export default function SubscriptionForm() {
   const createSubscription = async () => {
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/create-subscription", {
+      const res = await axios.post(`http://${apiUrl}/create-subscription`, {
         customerEmail: "prattipati1234@gmail.com",
         priceId: prices[selectedPlan],
       });

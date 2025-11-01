@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const { Title, Text } = Typography;
 
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 export default function SuccessPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function SuccessPage() {
 
     const fetchSession = async () => {
       try {
-        const { data } = await axios.post("http://localhost:5000/retrieve-checkout-session", {
+        const { data } = await axios.post(`http://${apiUrl}/retrieve-checkout-session`, {
           session_id: sessionId,
         });
         setSession(data);
